@@ -14,7 +14,6 @@
 *.yml
 **/_tests
 brew-distribution
-CHANGELOG.md
 CONTRIBUTING.md
 coverage
 dangerfile.circle.js
