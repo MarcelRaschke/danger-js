@@ -19,6 +19,10 @@
 
 <!-- Your comment above this -->
 
+## 13.0.6
+
+- Fixes a `danger local` shell execution possibility [@Junming] 
+
 ## 13.0.5
 
 - Dropped p-limit as a dep
@@ -2032,10 +2036,6 @@ That should do ya. I think. This doesn't support babel, and I haven't explored u
 Not usable for others, only stubs of classes etc. - [@orta]
 
 [@417-72ki]: https://github.com/417-72KI
-[@HonzaMac]: https://github.com/HonzaMac
-[@JanStevens]: https://github.com/JanStevens
-[@RDIL]: https://github.com/RDIL
-[@Teamop]: https://github.com/Teamop
 [@adam-bratin]: https://github.com/adam-bratin
 [@adam-moss]: https://github.com/adam-moss
 [@adamnoakes]: https://github.com/adamnoakes
@@ -2059,10 +2059,11 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@dbgrandi]: https://github.com/dbgrandi
 [@dblandin]: https://github.com/dblandin
 [@denieler]: https://github.com/denieler
-[@dimitar-hristov]: https://github.com/dimitar-hristov
 [@dfalling]: https://github.com/dfalling
+[@dimitar-hristov]: https://github.com/dimitar-hristov
 [@dkundel]: https://github.com/dkundel
 [@doniyor2109]: https://github.com/doniyor2109
+[@dremig]: https://github.com/dremig
 [@ds300]: https://github.com/ds300
 [@f-meloni]: https://github.com/f-meloni
 [@fbartho]: https://github.com/fbartho
@@ -2082,12 +2083,14 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@hmcc]: https://github.com/hmcc
 [@hmschreiner]: https://github.com/hmschreiner
 [@hongrich]: https://github.com/hongrich
+[@HonzaMac]: https://github.com/HonzaMac
 [@igorbek]: https://github.com/igorbek
 [@iljadaderko]: https://github.com/IljaDaderko
 [@imorente]: https://github.com/imorente
 [@ivankatliarchuk]: https://github.com/ivankatliarchuk
 [@jamiebuilds]: https://github.com/jamiebuilds
 [@jamime]: https://github.com/jamime
+[@JanStevens]: https://github.com/JanStevens
 [@joarwilk]: https://github.com/joarwilk
 [@johansteffner]: https://github.com/johansteffner
 [@jonny133]: https://github.com/jonny133
@@ -2125,11 +2128,12 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@pgoudreau]: https://github.com/@pgoudreau
 [@pinkasey]: https://github.com/pinkasey
 [@pveyes]: https://github.com/pveyes
+[@radimsv]: https://github.com/radimsv
 [@randak]: https://github.com/randak
 [@ravanscafi]: https://github.com/ravanscafi
+[@RDIL]: https://github.com/RDIL
 [@rogerluan]: https://github.com/rogerluan
 [@rohit-gohri]: https://github.com/rohit-gohri
-[@radimsv]: https://github.com/radimsv
 [@rouby]: https://github.com/rouby
 [@rzgry]: https://github.com/rzgry
 [@sajjadzamani]: https://github.com/sajjadzamani
@@ -2146,10 +2150,11 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@stevemoser]: https://github.com/stevemoser
 [@stevenp]: https://github.com/stevenp
 [@sunshinejr]: https://github.com/sunshinejr
+[@Teamop]: https://github.com/Teamop
+[@thawankeane]: https://github.com/thawankeane
 [@thii]: https://github.com/thii
 [@tibdex]: https://github.com/tibdex
 [@tim3trick]: https://github.com/tim3trick
-[@thawankeane]: https://github.com/thawankeane
 [@tomstrepsil: https://github.com/TomStrepsil]
 [@tychota]: https://github.com/tychota
 [@urkle]: https://github.com/urkle
