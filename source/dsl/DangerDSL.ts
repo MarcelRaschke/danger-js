@@ -1,11 +1,11 @@
 // Please don't have includes in here that aren't inside the DSL folder, or the d.ts/flow defs break
 
 import { GitDSL, GitJSONDSL } from "../dsl/GitDSL"
-import { GitHubDSL } from "../dsl/GitHubDSL"
+import { GitHubDSL, GitHubJSONDSL } from "../dsl/GitHubDSL"
 import { BitBucketServerDSL, BitBucketServerJSONDSL } from "../dsl/BitBucketServerDSL"
 import { DangerUtilsDSL } from "./DangerUtilsDSL"
 import { CliArgs } from "../dsl/cli-args"
-import { GitLabDSL } from "./GitLabDSL"
+import { GitLabDSL, GitLabJSONDSL } from "./GitLabDSL"
 import { BitBucketCloudJSONDSL, BitBucketCloudDSL } from "./BitBucketCloudDSL"
 
 /**
@@ -56,13 +56,13 @@ export interface DangerDSLJSONType {
   /** The data only version of Git DSL */
   git: GitJSONDSL
   /** The data only version of GitHub DSL */
-  github?: GitHubDSL
+  github?: GitHubJSONDSL
   /** The data only version of BitBucket Server DSL */
   bitbucket_server?: BitBucketServerJSONDSL
   /** The data only version of BitBucket Cloud DSL */
   bitbucket_cloud?: BitBucketCloudJSONDSL
   /** The data only version of GitLab DSL */
-  gitlab?: GitLabDSL
+  gitlab?: GitLabJSONDSL
   /**
    * Used in the Danger JSON DSL to pass metadata between
    * processes. It will be undefined when used inside the Danger DSL

@@ -351,7 +351,7 @@ class GitLab implements Platform {
 
 export default GitLab
 
-export const gitlabJSONToGitLabDSL = (gl: GitLabDSL, api: GitLabAPI): GitLabDSL => ({
+export const gitlabJSONToGitLabDSL = (gl: GitLabJSONDSL, api: GitLabAPI): GitLabDSL => ({
   ...gl,
   utils: {
     fileContents: api.getFileContents,

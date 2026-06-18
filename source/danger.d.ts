@@ -604,13 +604,13 @@ interface DangerDSLJSONType {
   /** The data only version of Git DSL */
   git: GitJSONDSL
   /** The data only version of GitHub DSL */
-  github?: GitHubDSL
+  github?: GitHubJSONDSL
   /** The data only version of BitBucket Server DSL */
   bitbucket_server?: BitBucketServerJSONDSL
   /** The data only version of BitBucket Cloud DSL */
   bitbucket_cloud?: BitBucketCloudJSONDSL
   /** The data only version of GitLab DSL */
-  gitlab?: GitLabDSL
+  gitlab?: GitLabJSONDSL
   /**
    * Used in the Danger JSON DSL to pass metadata between
    * processes. It will be undefined when used inside the Danger DSL

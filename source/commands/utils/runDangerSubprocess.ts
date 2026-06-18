@@ -19,10 +19,10 @@ const messageToSendDSL = "danger://send-dsl"
 
 // Sanitizes the DSL so for sending via STDOUT
 export const prepareDangerDSL = (dangerDSL: DangerDSLJSONType) => {
-  if (dangerDSL.github && dangerDSL.github.api) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    delete dangerDSL.github.api
+  // `api` is a runtime-only field on the full GitHub DSL; strip it before serializing to JSON
+  const github = dangerDSL.github as { api?: unknown } | undefined
+  if (github && github.api) {
+    delete github.api
   }
 
   const dangerJSONOutput: DangerJSON = { danger: dangerDSL }
