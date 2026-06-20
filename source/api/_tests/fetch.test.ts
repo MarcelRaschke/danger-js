@@ -1,8 +1,6 @@
 import * as http from "http"
-import * as node_fetch from "node-fetch"
 
-import type { HttpProxyAgent } from "http-proxy-agent"
-import type { HttpsProxyAgent } from "https-proxy-agent"
+import { ProxyAgent } from "undici"
 import { api } from "../fetch"
 
 interface ResponseMock {
@@ -42,37 +40,9 @@ class TestServer {
   }
 }
 
-class TestProxy {
-  isRunning = false
-  private port = 30002
-  private hostname = "localhost"
-  private router = (_req: any, res: any) => {
-    res.statusCode = 200
-    res.end(null)
-  }
-  private server = http.createServer(this.router)
-
-  start = async (): Promise<void> => {
-    return new Promise<void>((resolve, reject) => {
-      this.isRunning = true
-      this.server.on("error", (e) => {
-        reject(e)
-      })
-      this.server.listen(this.port, this.hostname, undefined, () => resolve())
-    })
-  }
-  stop = async (): Promise<void> => {
-    return new Promise<void>((resolve, reject) => {
-      this.isRunning = false
-      this.server.close((err: any) => (err ? reject(err) : resolve()))
-    })
-  }
-}
-
 describe("fetch", () => {
   let url: string
   let server = new TestServer()
-  let proxy = new TestProxy()
 
   beforeEach(() => {
     url = "http://localhost:30001/"
@@ -80,10 +50,6 @@ describe("fetch", () => {
 
   afterEach(async () => {
     await server.stop()
-
-    if (proxy.isRunning) {
-      await proxy.stop()
-    }
   })
 
   it("handles json success", async () => {
@@ -125,51 +91,51 @@ describe("fetch", () => {
     expect(await response.text()).toBe(body)
   })
 
-  it("sets proxy agent when HTTPS_PROXY env variable is defined", async () => {
+  it("sets proxy dispatcher when HTTPS_PROXY env variable is defined", async () => {
     const proxyUrl = "http://localhost:30002/"
+    const abortController = new AbortController()
+    abortController.abort()
 
-    await proxy.start()
     await server.start({})
 
-    let options: node_fetch.RequestInit = { agent: undefined }
-    await api(url, options, true, { HTTPS_PROXY: proxyUrl })
-    let agent = options.agent as HttpsProxyAgent<string>
-    expect(agent["proxy"].href).toBe(proxyUrl)
+    let options = { method: "GET", dispatcher: undefined, signal: abortController.signal }
+    await api(url, options, true, { HTTPS_PROXY: proxyUrl }).catch(() => undefined)
+    expect(options.dispatcher).toBeInstanceOf(ProxyAgent)
   })
 
-  it("sets proxy agent when https_proxy env variable is defined", async () => {
+  it("sets proxy dispatcher when https_proxy env variable is defined", async () => {
     const proxyUrl = "http://localhost:30002/"
+    const abortController = new AbortController()
+    abortController.abort()
 
-    await proxy.start()
     await server.start({})
 
-    let options: node_fetch.RequestInit = { agent: undefined }
-    await api(url, options, true, { https_proxy: proxyUrl })
-    let agent = options.agent as HttpsProxyAgent<string>
-    expect(agent["proxy"].href).toBe(proxyUrl)
+    let options = { method: "GET", dispatcher: undefined, signal: abortController.signal }
+    await api(url, options, true, { https_proxy: proxyUrl }).catch(() => undefined)
+    expect(options.dispatcher).toBeInstanceOf(ProxyAgent)
   })
 
-  it("sets proxy agent when HTTP_PROXY env variable is defined", async () => {
+  it("sets proxy dispatcher when HTTP_PROXY env variable is defined", async () => {
     const proxyUrl = "http://localhost:30002/"
+    const abortController = new AbortController()
+    abortController.abort()
 
-    await proxy.start()
     await server.start({})
 
-    let options: node_fetch.RequestInit = { agent: undefined }
-    await api(url, options, true, { HTTP_PROXY: proxyUrl })
-    let agent = options.agent as HttpProxyAgent<string>
-    expect(agent["proxy"].href).toBe(proxyUrl)
+    let options = { method: "GET", dispatcher: undefined, signal: abortController.signal }
+    await api(url, options, true, { HTTP_PROXY: proxyUrl }).catch(() => undefined)
+    expect(options.dispatcher).toBeInstanceOf(ProxyAgent)
   })
 
-  it("sets proxy agent when http_proxy env variable is defined", async () => {
+  it("sets proxy dispatcher when http_proxy env variable is defined", async () => {
     const proxyUrl = "http://localhost:30002/"
+    const abortController = new AbortController()
+    abortController.abort()
 
-    await proxy.start()
     await server.start({})
 
-    let options: node_fetch.RequestInit = { agent: undefined }
-    await api(url, options, true, { http_proxy: proxyUrl })
-    let agent = options.agent as HttpProxyAgent<string>
-    expect(agent["proxy"].href).toBe(proxyUrl)
+    let options = { method: "GET", dispatcher: undefined, signal: abortController.signal }
+    await api(url, options, true, { http_proxy: proxyUrl }).catch(() => undefined)
+    expect(options.dispatcher).toBeInstanceOf(ProxyAgent)
   })
 })

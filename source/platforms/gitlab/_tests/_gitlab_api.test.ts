@@ -3,7 +3,6 @@ import nock, { Definition } from "nock"
 import { default as GitLabAPI, getGitLabAPICredentialsFromEnv } from "../GitLabAPI"
 import { resolve } from "path"
 import { readFileSync } from "fs"
-import "./_fetch_polyfill"
 
 const nockBack = nock.back
 nockBack.fixtures = __dirname + "/fixtures"

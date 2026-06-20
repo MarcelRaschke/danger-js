@@ -1,10 +1,12 @@
-import { debug } from "../debug"
-import * as node_fetch from "node-fetch"
-
-import { HttpProxyAgent } from "http-proxy-agent"
-import { HttpsProxyAgent } from "https-proxy-agent"
-
+import { fetch as undiciFetch, Headers, ProxyAgent } from "undici"
+import type { Request, RequestInit, Response } from "undici"
 import AsyncRetry from "async-retry"
+
+import { debug } from "../debug"
+
+export type FetchResponse = Omit<Response, "json"> & {
+  json(): Promise<any>
+}
 
 const d = debug("networking")
 declare const global: any
@@ -12,7 +14,7 @@ declare const global: any
 const isJest = typeof jest !== "undefined"
 const warn = isJest ? () => "" : console.warn
 
-const shouldRetryRequest = (res: node_fetch.Response) => {
+const shouldRetryRequest = (res: FetchResponse) => {
   // Don't retry 4xx errors other than 401. All 4xx errors can probably be ignored once
   // the Github API issue causing https://github.com/danger/peril/issues/440 is fixed
   return res.status === 401 || (res.status >= 500 && res.status <= 599)
@@ -25,15 +27,11 @@ const shouldRetryRequest = (res: node_fetch.Response) => {
  * @param {fetch.RequestInit} [init] the usual options
  * @returns {Promise<fetch.Response>} network-y promise
  */
-export async function retryableFetch(
-  url: string | node_fetch.Request,
-  init: node_fetch.RequestInit
-): Promise<node_fetch.Response> {
+export async function retryableFetch(url: string | Request, init: RequestInit): Promise<FetchResponse> {
   const retries = isJest ? 1 : 3
   return AsyncRetry(
     async (_, attempt) => {
-      const originalFetch = node_fetch.default
-      const res = await originalFetch(url, init)
+      const res = await undiciFetch(url, init)
 
       // Throwing an error will trigger a retry
       if (attempt <= retries && shouldRetryRequest(res)) {
@@ -60,14 +58,15 @@ export async function retryableFetch(
  * @returns {Promise<fetch.Response>} network-y promise
  */
 export function api(
-  url: string | node_fetch.Request,
-  init: node_fetch.RequestInit,
+  url: string | Request,
+  init: RequestInit,
   suppressErrorReporting?: boolean,
   processEnv: NodeJS.ProcessEnv = process.env
-): Promise<node_fetch.Response> {
+): Promise<FetchResponse> {
   const isTests = typeof jest !== "undefined"
-  if (isTests && !url.toString().includes("localhost")) {
-    const message = `No API calls in tests please: ${url}`
+  const requestUrl = typeof url === "string" ? url : url.url
+  if (isTests && !requestUrl.includes("localhost")) {
+    const message = `No API calls in tests please: ${requestUrl}`
     debugger
     throw new Error(message)
   }
@@ -82,18 +81,14 @@ export function api(
     const showToken = processEnv["DANGER_VERBOSE_SHOW_TOKEN"]
     const token = processEnv["DANGER_GITHUB_API_TOKEN"] || processEnv["GITHUB_TOKEN"]
 
-    if (init.headers) {
-      for (const prop in init.headers) {
-        if (init.headers.hasOwnProperty(prop)) {
-          // Don't show the token for normal verbose usage
-          if (init.headers[prop].includes(token) && !showToken) {
-            output.push("-H", `"${prop}: [API TOKEN]"`)
-            continue
-          }
-          output.push("-H", `"${prop}: ${init.headers[prop]}"`)
-        }
+    new Headers(init.headers).forEach((value, prop) => {
+      // Don't show the token for normal verbose usage
+      if (token && value.includes(token) && !showToken) {
+        output.push("-H", `"${prop}: [API TOKEN]"`)
+        return
       }
-    }
+      output.push("-H", `"${prop}: ${value}"`)
+    })
 
     if (init.method === "POST") {
       // const body:string = init.body
@@ -107,16 +102,15 @@ export function api(
     d(output.join(" "))
   }
 
-  let agent = init.agent
+  let dispatcher = init.dispatcher
   const proxy =
     processEnv["HTTPS_PROXY"] || processEnv["https_proxy"] || processEnv["HTTP_PROXY"] || processEnv["http_proxy"]
 
-  if (!agent && proxy) {
-    let secure = url.toString().startsWith("https")
-    init.agent = secure ? new HttpsProxyAgent(proxy) : new HttpProxyAgent(proxy)
+  if (!dispatcher && proxy) {
+    init.dispatcher = new ProxyAgent(proxy)
   }
 
-  return retryableFetch(url, init).then(async (response: node_fetch.Response) => {
+  return retryableFetch(url, init).then(async (response: FetchResponse) => {
     // Handle failing errors
     if (!suppressErrorReporting && !response.ok) {
       // we should not modify the response when an error occur to allow body stream to be read again if needed

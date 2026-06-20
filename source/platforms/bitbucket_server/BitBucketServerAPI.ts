@@ -1,7 +1,4 @@
 import { debug } from "../../debug"
-import * as node_fetch from "node-fetch"
-import { Agent } from "http"
-import { HttpsProxyAgent } from "https-proxy-agent"
 
 import {
   BitBucketServerPRDSL,
@@ -20,6 +17,7 @@ import { Comment } from "../platform"
 import { Env } from "../../ci_source/ci_source"
 import { dangerIDToString } from "../../runner/templates/bitbucketServerTemplate"
 import { api as fetch } from "../../api/fetch"
+import type { FetchResponse } from "../../api/fetch"
 
 // Note that there are parts of this class which don't seem to be
 // used by Danger, they are exposed for Peril support.
@@ -348,15 +346,6 @@ export class BitBucketServerAPI implements BitBucketServerAPIDSL {
     const url = `${this.repoCredentials.host}/${path}`
     this.d(`${method} ${url}`)
 
-    // Allow using a proxy configured through environmental variables
-    // Remember that to avoid the error "Error: self signed certificate in certificate chain"
-    // you should also do: "export NODE_TLS_REJECT_UNAUTHORIZED=0". See: https://github.com/request/request/issues/2061
-    let agent: Agent | undefined = undefined
-    let proxy = process.env.http_proxy || process.env.https_proxy
-    if (proxy) {
-      agent = new HttpsProxyAgent(proxy)
-    }
-
     return this.fetch(
       url,
       {
@@ -366,26 +355,25 @@ export class BitBucketServerAPI implements BitBucketServerAPIDSL {
           "Content-Type": "application/json",
           ...headers,
         },
-        agent,
       },
       suppressErrors
     )
   }
 
-  get = (path: string, headers: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
+  get = (path: string, headers: any = {}, suppressErrors?: boolean): Promise<FetchResponse> =>
     this.api(path, headers, null, "GET", suppressErrors)
 
-  post = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
+  post = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<FetchResponse> =>
     this.api(path, headers, JSON.stringify(body), "POST", suppressErrors)
 
-  put = (path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> =>
+  put = (path: string, headers: any = {}, body: any = {}): Promise<FetchResponse> =>
     this.api(path, headers, JSON.stringify(body), "PUT")
 
-  delete = (path: string, headers: any = {}, body: any = {}): Promise<node_fetch.Response> =>
+  delete = (path: string, headers: any = {}, body: any = {}): Promise<FetchResponse> =>
     this.api(path, headers, JSON.stringify(body), "DELETE")
 }
 
-function throwIfNotOk(res: node_fetch.Response) {
+function throwIfNotOk(res: FetchResponse) {
   if (!res.ok) {
     let message = `${res.status} - ${res.statusText}`
     if (res.status >= 400 && res.status < 500) {

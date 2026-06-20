@@ -1,11 +1,11 @@
 import { Octokit as GitHubNodeAPI } from "@octokit/rest"
 import { debug } from "../../debug"
-import * as node_fetch from "node-fetch"
 import parse from "parse-link-header"
 import { GitHubPRDSL, GitHubIssueComment, GitHubUser } from "../../dsl/GitHubDSL"
 
 import { dangerIDToString } from "../../runner/templates/githubIssueTemplate"
 import { api as fetch } from "../../api/fetch"
+import type { FetchResponse } from "../../api/fetch"
 import { RepoMetaData } from "../../dsl/RepoMetaData"
 import { CheckOptions } from "./comms/checks/resultsToCheck"
 
@@ -307,9 +307,9 @@ export class GitHubAPI {
      * Read response header and locate next page for pagination via link header.
      * If not found, will return -1.
      *
-     * @param response Github API response sent via node-fetch
+     * @param response Github API response sent via undici
      */
-    const getNextPageFromLinkHeader = (response: node_fetch.Response): number => {
+    const getNextPageFromLinkHeader = (response: FetchResponse): number => {
       const linkHeader = response.headers.get("link")
       if (!linkHeader) {
         this.d(`getNextPageFromLinkHeader:: Given response does not contain link header for pagination`)
@@ -590,11 +590,11 @@ ${file.patch}
     )
   }
 
-  get = (path: string, headers: any = {}): Promise<node_fetch.Response> => this.api(path, headers, null, "GET")
+  get = (path: string, headers: any = {}): Promise<FetchResponse> => this.api(path, headers, null, "GET")
 
-  post = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
+  post = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<FetchResponse> =>
     this.api(path, headers, JSON.stringify(body), "POST", suppressErrors)
 
-  patch = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<node_fetch.Response> =>
+  patch = (path: string, headers: any = {}, body: any = {}, suppressErrors?: boolean): Promise<FetchResponse> =>
     this.api(path, headers, JSON.stringify(body), "PATCH", suppressErrors)
 }
