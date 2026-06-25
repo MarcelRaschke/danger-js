@@ -1,5 +1,5 @@
 import * as jwt from "jsonwebtoken"
-import fetch from "node-fetch"
+import { fetch } from "undici"
 
 // Step 1
 
@@ -35,6 +35,12 @@ const requestAccessTokenForInstallation = (appID: string, installationID: number
   })
 }
 
+const isInstallationAccessToken = (credentials: unknown): credentials is { token: string } =>
+  typeof credentials === "object" &&
+  credentials !== null &&
+  "token" in credentials &&
+  typeof credentials.token === "string"
+
 /** Generates a temporary access token for an app's installation, 5m long */
 export const getAccessTokenForInstallation = async (appID: string, installationID: number, key: string) => {
   const newToken = await requestAccessTokenForInstallation(appID, installationID, key)
@@ -43,5 +49,8 @@ export const getAccessTokenForInstallation = async (appID: string, installationI
     console.error(`Could not get an access token for ${installationID}`)
     console.error(`GitHub returned: ${JSON.stringify(credentials)}`)
   }
-  return credentials.token as string
+  if (!isInstallationAccessToken(credentials)) {
+    throw new Error(`GitHub did not return an installation access token for ${installationID}`)
+  }
+  return credentials.token
 }
