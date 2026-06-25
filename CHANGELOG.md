@@ -16,19 +16,21 @@
 
 <!-- Your comment below this -->
 
-
 <!-- Your comment above this -->
+
+## 13.0.9
+
+- Switch to use the native node-js fetch unidici
 
 ## 13.0.6
 
-- Fixes a `danger local` shell execution possibility [@Junming] 
+- Fixes a `danger local` shell execution possibility [@Junming]
 
 ## 13.0.5
 
 - Dropped p-limit as a dep
 - Force no-color in git for the local command - cyberowl
 - Use stdout/err in local command - cyberowl
-
 
 ## 13.0.4
 
@@ -49,7 +51,7 @@
 
 ## 12.3.4
 
-- Ensure that [babel ignores](https://babeljs.io/docs/options#ignore) do not cause the transpiler to fall over, by supporting the 
+- Ensure that [babel ignores](https://babeljs.io/docs/options#ignore) do not cause the transpiler to fall over, by supporting the
 `null` return from `loadOptions` which occurs when a file is ignored.
 - Allow absolute paths for a Dangerfile
 
@@ -167,8 +169,8 @@ Reverts a change for GitHub Actions which was likely causing duplicate comments 
 ## 11.1.0
 
 - Adds support for the new [GitHub Job summaries](https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/) API via:
- - `danger.github.setSummaryMarkdown("[markdown]")` for the JavaScript DSL
- - The results DSL for sub-processes now accepts `{ github: { stepSummary: "[markdown]" } }` from projects the Swift and Kotlin implementations of Danger.
+- `danger.github.setSummaryMarkdown("[markdown]")` for the JavaScript DSL
+- The results DSL for sub-processes now accepts `{ github: { stepSummary: "[markdown]" } }` from projects the Swift and Kotlin implementations of Danger.
 
  This gives you the chance to leave feedback on the overview page for a PR, it won't ping people
  in the PR thread or trigger emails which is why it's a separate attribute in the DSL. Potentially open to having the main
@@ -197,7 +199,6 @@ Reverts a change for GitHub Actions which was likely causing duplicate comments 
   This is only likely to hit you if you use `danger.github.api` pretty extensively in your Dangerfiles, but better to keep an eye out.
 
 # 10.8.1
-
 
 - Fix: [Github] Multiple Inline Comments on the same file/line should all be posted [#1176](https://github.com/danger/danger-js/pull/1176) [@Rouby]
 - Fix: [git] JSONDiffForFile when passed the path of a JSON File that was moved, crashes [#1193](https://github.com/danger/danger-js/pull/1193) [@fbartho]
@@ -286,6 +287,7 @@ Reverts a change for GitHub Actions which was likely causing duplicate comments 
 # 10.4.0
 
 - Adds aliases to the FakeCI env vars. You could now have something like:
+
   ```yml
   - run: "npx danger-ts ci"
     env:
@@ -294,6 +296,7 @@ Reverts a change for GitHub Actions which was likely causing duplicate comments 
       DANGER_MANUAL_GH_REPO: ${{ steps.pr_info.outputs.repo }}
       DANGER_MANUAL_PR_NUM: ${{ steps.pr_info.outputs.number }}
   ```
+
   Which looks more intentional instead of: `DANGER_FAKE_CI` etc. [@orta]
 
 # 10.3.1
@@ -733,7 +736,7 @@ Reverts a change for GitHub Actions which was likely causing duplicate comments 
 
 # 5.0.0
 
-_No breaking changes_ - I'm just bumping it because it's a lot of under-the-hood work, and I've not been able to test it
+*No breaking changes* - I'm just bumping it because it's a lot of under-the-hood work, and I've not been able to test it
 thoroughly in production.
 
 This release bring support for GitHub actions. It does this merging in some of the responsibilities that used to live
@@ -751,7 +754,7 @@ Notes about Danger JS:
 - Adds support for not include a tsconfig for typescript projects, danger will use the default config if it can't find
   one in your project
 - Hardcodes the GitHub Actions userID into danger ( blocked by
-  https://platform.github.community/t/obtaining-the-id-of-the-bot-user/2076 )
+  <https://platform.github.community/t/obtaining-the-id-of-the-bot-user/2076> )
 - Allows running with a simplified DSL when running on a GitHub action that isn't a PR
 - Use new env vars for GitHub Actions
 
@@ -954,7 +957,7 @@ Also, `danger pr` now accepts a `--process` arg.
 
   Instead there are two options:
 
-  - Use a GitHub app owned by Danger: https://github.com/apps/danger-js
+  - Use a GitHub app owned by Danger: <https://github.com/apps/danger-js>
   - Use your own GitHub app.
 
   The security model of the GitHub app means it's totally safe to use our GitHub app, it can only read/write to checks
@@ -1035,7 +1038,7 @@ Also, `danger pr` now accepts a `--process` arg.
 
 ## 3.4.4
 
-- Fixed a bug where Danger would get access to _all_ inline comments, thus deleting comments posted by other people
+- Fixed a bug where Danger would get access to *all* inline comments, thus deleting comments posted by other people
   [@sunshinejr]
 
 ## 3.4.3
@@ -1234,7 +1237,7 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 ### 3.0.1
 
 - Bug fixes and debug improvements. If you're interested run danger with `DEBUG="*" yarn danger [etc]` and you'll get a
-  _lot_ of output. This should make it much easier to understand what's going on. - [@orta]
+  *lot* of output. This should make it much easier to understand what's going on. - [@orta]
 
 ### 3.0.0
 
@@ -1253,12 +1256,12 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
   This release deprecates running `danger` on it's own, so if you have `yarn danger` then move that be `yarn danger ci`.
 
   Each command name is now much more obvious in it intentions, I've heard many times that people aren't sure what
-  commands do and it's _is_ still even worse in Danger ruby. I figure now is as good a time as any a good time to call
+  commands do and it's *is* still even worse in Danger ruby. I figure now is as good a time as any a good time to call
   it a clean slate.
 
   On a positive note, I gave all of the help screens an update and tried to improve language where I could.
 
-* [@orta]
+- [@orta]
 
 ### 2.1.9-10
 
@@ -1314,7 +1317,7 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 
 ### 2.0.0
 
-- Fixes the `danger.js.flow` fix to handle exports correctly, you _probably_ need to add
+- Fixes the `danger.js.flow` fix to handle exports correctly, you *probably* need to add
   `.*/node_modules/danger/distribution/danger.js.flow` to the `[libs]` section of your settings for it to work though -
   [@orta]
 
@@ -1331,7 +1334,7 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
   - Dangerfile evaluation is in a separate process, run without a vm sandbox. This fixes the async problem which we
     created `schedule` for. Previously, any async work in your Dangerfile needed to be declared to Danger so that it
     knew when all of the work had finished. Now that the running happens inside another process, we can use the
-    `on_exit` calls of the process to know that all work is done. So, _in Danger_ (not in Peril) async code will work
+    `on_exit` calls of the process to know that all work is done. So, *in Danger* (not in Peril) async code will work
     just like inside a traditional node app.
 
   - Makes `danger process` a first class citizen. This is awesome because there will be reliable support for other
@@ -1349,11 +1352,11 @@ You'll need to have [husky](https://www.npmjs.com/package/husky) installed for t
 Moves away from vm2 to a require-based Dangerfile runner. This removes the sandboxing aspect of the Dangerfile
 completely, but the sandboxing was mainly for Peril and I have a plan for that.
 
-https://github.com/danger/peril/issues/159
+<https://github.com/danger/peril/issues/159>
 
 I would like to move the main parts of Danger JS to also work like `danger process`, so I'll be continuing to work as a
 alpha for a bit more. One interesting side-effect of this could be that I can remove `schedule` from the DSL. I've not
-tested it yet though. Turns out this change is _real_ hard to write tests for. I've made #394 for that.
+tested it yet though. Turns out this change is *real* hard to write tests for. I've made #394 for that.
 
 ./[@orta]
 
@@ -1489,7 +1492,7 @@ Some UX fixes:
   I like to think of it as having gone from Jest's runner which is a massive toolbox, to vm2 which is a tiny toolbox
   where I'll have to add a bunch of new tools to get everything working.
 
-  The _massive downside_ to this is that Danger now has to have support for transpiling via Babel, or from TypeScript
+  The *massive downside* to this is that Danger now has to have support for transpiling via Babel, or from TypeScript
   unlike before, where it was a freebie inside Jest. Jest handled this so well. This means that a Dangerfile which used
   to "just work" with no config may not. Thus, IMO, this is a breaking major semver.
 
@@ -1643,7 +1646,7 @@ If these files are supposed to not exist, please update your PR body to include 
   - Added `result.before` and `result.after` for easy access to full contents of the original & updated file
   - `danger.git.diffForFile` is now an `async` function
 
-  #### TL;DR:
+  #### TL;DR
 
   ```js
   // In danger 0.16.0:
@@ -1697,7 +1700,7 @@ If these files are supposed to not exist, please update your PR body to include 
 
   This is built on top of Jest's custom transformers, so if you are already using Jest with TypeScript, then you can
   change the `dangerfile.js` to `dangerfile.ts` and nothing should need changing ( except that you might have new
-  warnings/errors ) (_note:_ in changing this for Danger, I had to also add the `dangerfile.ts` to the `"exclude"`
+  warnings/errors ) (*note:* in changing this for Danger, I had to also add the `dangerfile.ts` to the `"exclude"`
   section of the `tsconfig.json` so that it didn't change the project's root folder.)
 
   This repo is now using both a babel Dangerfile (running on Circle CI) and a TypeScript one (running on Travis) to
@@ -1818,10 +1821,10 @@ If these files are supposed to not exist, please update your PR body to include 
 
 - Adds new GitHub DSL elements - deecewan
 
-* `danger.github.issue` - As a PR is an issue in GitHub terminology, the issue contains a bit more metadata. Mainly
+- `danger.github.issue` - As a PR is an issue in GitHub terminology, the issue contains a bit more metadata. Mainly
   labels, so if you want to know what labels are applied to a PR, use `danger.github.issue.labels`
-* `danger.github.reviews` - Find out about your reviews in the new GitHub Reviewer systems,
-* `danger.github.requested_reviewers` - Find out who has been requested to review a PR.
+- `danger.github.reviews` - Find out about your reviews in the new GitHub Reviewer systems,
+- `danger.github.requested_reviewers` - Find out who has been requested to review a PR.
 
 - Updated TypeScript and Jest dependencies - [@orta]
 - Add support for Github Enterprise via DANGER_GITHUB_API_BASE_URL env var - mashbourne
@@ -2001,7 +2004,7 @@ git
 fail(message: string)
 ```
 
-`pr` _probably_ won't be sticking around for the long run, but if you're using a `0.0.2` release, you should be OK with
+`pr` *probably* won't be sticking around for the long run, but if you're using a `0.0.2` release, you should be OK with
 that. It's the full metadata of the PR, so
 [this JSON file](https://raw.githubusercontent.com/danger/danger/master/spec/fixtures/github_api/pr_response.json).
 `git` currently has:
@@ -2063,7 +2066,6 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@dimitar-hristov]: https://github.com/dimitar-hristov
 [@dkundel]: https://github.com/dkundel
 [@doniyor2109]: https://github.com/doniyor2109
-[@dremig]: https://github.com/dremig
 [@ds300]: https://github.com/ds300
 [@f-meloni]: https://github.com/f-meloni
 [@fbartho]: https://github.com/fbartho
@@ -2094,7 +2096,6 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@joarwilk]: https://github.com/joarwilk
 [@johansteffner]: https://github.com/johansteffner
 [@jonny133]: https://github.com/jonny133
-[@joshacheson]: https://github.com/joshacheson
 [@jtreanor]: https://github.com/jtreanor
 [@keplersj]: https://github.com/keplersj
 [@kesne]: https://github.com/kesne
@@ -2156,13 +2157,13 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@tibdex]: https://github.com/tibdex
 [@tim3trick]: https://github.com/tim3trick
 [@tomstrepsil: https://github.com/TomStrepsil]
-[@tychota]: https://github.com/tychota
-[@urkle]: https://github.com/urkle
-[@valscion]: https://github.com/valscion
-[@wardpeet]: https://github.com/wardpeet
-[@watchinharrison]: https://github.com/watchinharrison
-[@wizardishungry]: https://github.com/wizardishungry
-[@yohix]: https://github.com/yohix
-[@zdenektopic]: https://github.com/zdenektopic
-[danger-go]: https://github.com/bdotdub/danger-go
-[danger-swift]: https://github.com/danger/danger-swift#danger-swift
+[@tychota]: <https://github.com/tychota>
+[@urkle]: <https://github.com/urkle>
+[@valscion]: <https://github.com/valscion>
+[@wardpeet]: <https://github.com/wardpeet>
+[@watchinharrison]: <https://github.com/watchinharrison>
+[@wizardishungry]: <https://github.com/wizardishungry>
+[@yohix]: <https://github.com/yohix>
+[@zdenektopic]: <https://github.com/zdenektopic>
+[danger-go]: <https://github.com/bdotdub/danger-go>
+[danger-swift]: <https://github.com/danger/danger-swift#danger-swift>
